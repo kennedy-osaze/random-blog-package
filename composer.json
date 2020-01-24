@@ -1,0 +1,16 @@
+{
+    "name": "kennedy/random-blog-package",
+    "description": "A random markdown-powered package for Laravel",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kennedy Osaze",
+            "email": "me.osaze@gmail.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "orchestra/testbench": "^4.5"
+    }
+}
