@@ -12,5 +12,15 @@
     "require": {},
     "require-dev": {
         "orchestra/testbench": "^4.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kennedy\\RandomBlogPackage\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Kennedy\\RandomBlogPackage\\Tests\\": "tests/"
+        }
     }
 }
