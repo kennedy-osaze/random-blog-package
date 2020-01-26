@@ -24,5 +24,12 @@
         "psr-4": {
             "Kennedy\\RandomBlogPackage\\Tests\\": "tests/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Kennedy\\RandomBlogPackage\\BlogBaseServiceProvider"
+            ]
+        }
     }
 }
