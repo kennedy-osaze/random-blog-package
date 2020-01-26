@@ -2,11 +2,15 @@
 
 namespace Kennedy\RandomBlogPackage;
 
+use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 
 class BlogFileParser
 {
     protected $filename;
+
+    protected $fileRawContent = [];
 
     protected $fileData = [];
 
@@ -14,9 +18,16 @@ class BlogFileParser
     {
         $this->filename = $filename;
 
+        $this->parseFile();
+    }
+
+    public function parseFile()
+    {
         $this->splitFile();
 
-        $this->explodeFileData();
+        $this->explodeFileRawContent();
+
+        $this->processFields();
     }
 
     public function getFileData(): array
@@ -24,17 +35,22 @@ class BlogFileParser
         return $this->fileData;
     }
 
-    public function explodeFileData()
+    public function getFileRawContent(): array
+    {
+        return $this->fileRawContent;
+    }
+
+    public function explodeFileRawContent()
     {
         $formattedFileData = [];
 
-        foreach (explode("\n", trim($this->fileData[1])) as $fieldString) {
+        foreach (explode("\n", trim($this->fileRawContent[1])) as $fieldString) {
             preg_match('/(.*):\s?(.*)/', $fieldString, $fieldArray);
 
             $formattedFileData[$fieldArray[1]] = $fieldArray[2];
         }
 
-        $formattedFileData['body'] = trim($this->fileData[2]);
+        $formattedFileData['body'] = trim($this->fileRawContent[2]);
 
         $this->fileData += $formattedFileData;
     }
@@ -43,8 +59,24 @@ class BlogFileParser
     {
         preg_match(
             '/^\-{3}(.*)\-{3}(.*)/s',
-            File::get($this->filename),
-            $this->fileData
+            File::exists($this->filename) ? File::get($this->filename) : $this->filename,
+            $this->fileRawContent
         );
+    }
+
+    protected function processFields()
+    {
+        foreach ($this->fileData as $field => $value) {
+            $class = "Kennedy\RandomBlogPackage\Fields\\" . Str::studly($field);
+
+            if (! class_exists($class) || ! method_exists($class, 'process')) {
+                $class = "Kennedy\RandomBlogPackage\Fields\Meta";
+            }
+
+            $this->fileData = array_merge(
+                $this->fileData,
+                $class::process($field, $value, $this->fileData),
+            );
+        }
     }
 }
