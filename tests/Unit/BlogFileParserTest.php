@@ -3,7 +3,7 @@
 namespace Kennedy\RandomBlogPackage\Tests\Unit;
 
 use Illuminate\Support\Carbon;
-use Orchestra\Testbench\TestCase;
+use Kennedy\RandomBlogPackage\Tests\TestCase;
 use Kennedy\RandomBlogPackage\BlogFileParser;
 
 class BlogFileParserTest  extends TestCase

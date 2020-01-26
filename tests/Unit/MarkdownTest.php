@@ -2,7 +2,7 @@
 
 namespace Kennedy\RandomBlogPackage\Tests\Unit;
 
-use Orchestra\Testbench\TestCase;
+use Kennedy\RandomBlogPackage\Tests\TestCase;
 use Kennedy\RandomBlogPackage\MarkdownParser;
 
 class MarkdownTest extends TestCase
