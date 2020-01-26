@@ -2,12 +2,23 @@
 
 namespace Kennedy\RandomBlogPackage\Tests;
 
-use Illuminate\Foundation\Application;
 use Kennedy\RandomBlogPackage\BlogBaseServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 class TestCase extends OrchestraTestCase
 {
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->withFactories(__DIR__ . '/../database/factories');
+    }
+
     /**
      * Get Package Providers
      *
@@ -15,7 +26,7 @@ class TestCase extends OrchestraTestCase
      *
      * @return array
      */
-    protected function getPackageProviders(Application $app): array
+    protected function getPackageProviders($app): array
     {
         return [
             BlogBaseServiceProvider::class,
@@ -29,7 +40,7 @@ class TestCase extends OrchestraTestCase
      *
      * @return void
      */
-    protected function getEnvironmentSetUp(Application $app)
+    protected function getEnvironmentSetUp($app): void
     {
         $app['config']->set('database.default', 'test_database');
         $app['config']->set('database.connections.test_database', [
