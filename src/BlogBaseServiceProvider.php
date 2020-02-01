@@ -2,6 +2,7 @@
 
 namespace Kennedy\RandomBlogPackage;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class BlogBaseServiceProvider extends ServiceProvider
@@ -25,6 +26,10 @@ class BlogBaseServiceProvider extends ServiceProvider
     protected function registerResources(): void
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'blog');
+
+        $this->registerRoutes();
     }
 
     protected function registerPublishing()
@@ -32,5 +37,20 @@ class BlogBaseServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/blog.php' => config_path('blog.php'),
         ],  'blog');
+    }
+
+    public function registerRoutes()
+    {
+        Route::group($this->routeConfiguration(), function () {
+            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+        });
+    }
+
+    protected function routeConfiguration()
+    {
+        return [
+            'prefix' => config('blog.path', 'blogs'),
+            'namespace' => 'Kennedy\RandomBlogPackage\Http\Controllers',
+        ];
     }
 }

@@ -10,4 +10,6 @@ return [
         ],
 
     ],
+
+    'route-prefix' => 'blogs',
 ];
