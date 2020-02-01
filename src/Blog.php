@@ -10,7 +10,7 @@ class Blog
     {
         $driver = config('blog.driver', 'file');
 
-        $class = 'Kennedy\RandomBlogPackage\Drivers' . Str::studly($driver);
+        $class = 'Kennedy\RandomBlogPackage\Drivers\\' . Str::studly($driver);
 
         return new $class();
     }

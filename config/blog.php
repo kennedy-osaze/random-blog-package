@@ -1,7 +1,13 @@
 <?php
 
 return [
-    'path' => storage_path('app/blogs'),
+    'default' => env('BLOG_DRIVER', 'file'),
 
-    'driver' => 'file',
+    'drivers' => [
+
+        'file' => [
+            'path' => storage_path('app/blogs'),
+        ],
+
+    ],
 ];
