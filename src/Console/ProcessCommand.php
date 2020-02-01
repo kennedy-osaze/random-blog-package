@@ -6,7 +6,7 @@ use Exception;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Kennedy\RandomBlogPackage\Blog;
+use Kennedy\RandomBlogPackage\Facades\Blog;
 use Kennedy\RandomBlogPackage\Models\Post;
 
 class ProcessCommand extends Command

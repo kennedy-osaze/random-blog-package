@@ -2,6 +2,7 @@
 
 namespace Kennedy\RandomBlogPackage;
 
+use Kennedy\RandomBlogPackage\Blog;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -29,6 +30,8 @@ class BlogBaseServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'blog');
 
+        $this->registerFacades();
+
         $this->registerRoutes();
     }
 
@@ -52,5 +55,12 @@ class BlogBaseServiceProvider extends ServiceProvider
             'prefix' => config('blog.path', 'blogs'),
             'namespace' => 'Kennedy\RandomBlogPackage\Http\Controllers',
         ];
+    }
+
+    protected function registerFacades()
+    {
+        $this->app->singleton('Blog', function ($app) {
+            return new Blog();
+        });
     }
 }

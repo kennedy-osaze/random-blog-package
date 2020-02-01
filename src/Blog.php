@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 
 class Blog
 {
-    public static function driver()
+    public function driver()
     {
         $driver = config('blog.driver', 'file');
 
