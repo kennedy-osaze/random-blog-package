@@ -6,8 +6,8 @@ use Exception;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Kennedy\RandomBlogPackage\Facades\Blog;
 use Kennedy\RandomBlogPackage\Models\Post;
+use Kennedy\RandomBlogPackage\Facades\Blog;
 
 class ProcessCommand extends Command
 {
@@ -23,31 +23,24 @@ class ProcessCommand extends Command
             );
         }
 
-        try {
-            $this->addPosts(Blog::driver()->retrievePosts());
-        } catch (Exception $e) {
-            $this->error($e->getMessage());
-        }
-    }
-
-    protected function addPosts(array $posts)
-    {
-        foreach ($posts as $post) {
-            DB::transaction(function () use ($post) {
-                try {
-                    Post::create([
-                        'identifier' => $post['identifier'],
-                        'slug' => Str::slug($post['title']),
-                        'title' => ucfirst($post['title']),
-                        'body' => ucfirst($post['body']),
-                        'meta_data' => $post['meta'] ?? '',
-                    ]);
+        DB::transaction(function () {
+            try {
+                foreach (Blog::driver()->retrievePosts() as $post) {
+                    Post::updateOrCreate(
+                        ['identifier' => $post['identifier']],
+                        [
+                            'slug' => Str::slug($post['title']),
+                            'title' => ucfirst($post['title']),
+                            'body' => ucfirst($post['body']),
+                            'meta_data' => $post['meta'] ?? json_encode([]),
+                        ]
+                    );
 
                     $this->info("The blog post titled: '{$post['title']}' has been added.");
-                } catch (Exception $e) {
-                    $this->error('An error occurred processing the blog posts: ' . $e->getMessage());
                 }
-            });
-        }
+            } catch (Exception $e) {
+                $this->error('An error occurred processing the blog posts: ' . $e->getMessage());
+            }
+        });
     }
 }

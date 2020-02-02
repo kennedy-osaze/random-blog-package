@@ -20,7 +20,7 @@ class File extends Driver
 
     protected function parse($content, $identifier)
     {
-        $this->posts[] = array_merge(
+        return array_merge(
             (new BlogFileParser($content))->getFileData(),
             ['identifier' => Str::slug($identifier)],
         );
