@@ -2,8 +2,10 @@
 
 namespace Kennedy\RandomBlogPackage;
 
+use ReflectionClass;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use Kennedy\RandomBlogPackage\Facades\Blog;
 
 class BlogFileParser
 {
@@ -66,7 +68,7 @@ class BlogFileParser
     protected function processFields()
     {
         foreach ($this->fileData as $field => $value) {
-            $class = "Kennedy\RandomBlogPackage\Fields\\" . Str::studly($field);
+            $class = $this->getField(Str::studly($field));
 
             if (! class_exists($class) || ! method_exists($class, 'process')) {
                 $class = "Kennedy\RandomBlogPackage\Fields\Meta";
@@ -76,6 +78,17 @@ class BlogFileParser
                 $this->fileData,
                 $class::process($field, $value, $this->fileData),
             );
+        }
+    }
+
+    protected function getField(string $field)
+    {
+        foreach (Blog::getFields() as $availableFields) {
+            $class = new ReflectionClass($availableFields);
+
+            if ($class->getShortName() === $field) {
+                return $class->getName();
+            }
         }
     }
 }

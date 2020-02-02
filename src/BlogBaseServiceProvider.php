@@ -5,6 +5,7 @@ namespace Kennedy\RandomBlogPackage;
 use Kennedy\RandomBlogPackage\Blog;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Kennedy\RandomBlogPackage\Facades\Blog as FacadeBlog;
 
 class BlogBaseServiceProvider extends ServiceProvider
 {
@@ -33,6 +34,8 @@ class BlogBaseServiceProvider extends ServiceProvider
         $this->registerFacades();
 
         $this->registerRoutes();
+
+        $this->registerFields();
     }
 
     protected function registerPublishing()
@@ -40,6 +43,10 @@ class BlogBaseServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/blog.php' => config_path('blog.php'),
         ],  'blog');
+
+        $this->publishes([
+            __DIR__ . '/Console/stubs/BlogServiceProvider.stub' => app_path('Providers/BlogServiceProvider.php'),
+        ],  'blog-provider');
     }
 
     public function registerRoutes()
@@ -62,5 +69,16 @@ class BlogBaseServiceProvider extends ServiceProvider
         $this->app->singleton('Blog', function ($app) {
             return new Blog();
         });
+    }
+
+    protected function registerFields()
+    {
+        FacadeBlog::addFields([
+            Fields\Title::class,
+            Fields\Body::class,
+            Fields\Description::class,
+            Fields\Date::class,
+            Fields\Meta::class,
+        ]);
     }
 }
