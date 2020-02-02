@@ -18,9 +18,8 @@ class CreatePostsTable extends Migration
             $table->string('identifier')->index();
             $table->string('slug')->unique();
             $table->string('title');
-            $table->text('description')->nullable();
             $table->longText('body');
-            $table->text('meta_data')->nullable();
+            $table->json('meta_data')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

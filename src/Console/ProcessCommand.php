@@ -32,7 +32,7 @@ class ProcessCommand extends Command
                             'slug' => Str::slug($post['title']),
                             'title' => ucfirst($post['title']),
                             'body' => ucfirst($post['body']),
-                            'meta_data' => $post['meta'] ?? json_encode([]),
+                            'meta_data' => Post::getMetaAttributesFromPostArray($post),
                         ]
                     );
 

@@ -72,9 +72,7 @@ class BlogFileParserTest  extends TestCase
 
         $data = $blogFileParser->getFileData();
 
-        $expectedResult = json_encode(['author' => 'John Doe']);
-
-        $this->assertEquals($expectedResult,  $data['meta']);
+        $this->assertEquals(['author' => 'John Doe'],  $data['meta']);
     }
 
     public function testMetaFieldCanAlsoTakeTwoOrMoreExtraData()
@@ -85,10 +83,10 @@ class BlogFileParserTest  extends TestCase
 
         $data = $blogFileParser->getFileData();
 
-        $expectedResult = json_encode([
+        $expectedResult = [
             'author' => 'John Doe',
             'image' => "/random.image/xyz.jpg",
-        ]);
+        ];
 
         $this->assertEquals($expectedResult,  $data['meta']);
     }

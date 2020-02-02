@@ -14,9 +14,4 @@ class Blog
 
         return new $class();
     }
-
-    // public static function createFileDriver()
-    // {
-    //     // return new File
-    // }
 }
